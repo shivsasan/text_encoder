@@ -39,8 +39,6 @@ int main(int argc ,char* argv[])
 		//convert argv to base 10 integer;
 		long conv = strtol(argv[ii + 2], &p, 10);
 
-        // cout << conv << endl;
-
 		// Check for errors: e.g., the string does not represent an integer
 		// or the integer is larger than int
 		if (errno != 0 || *p != '\0') 
@@ -70,8 +68,6 @@ int main(int argc ,char* argv[])
 		}
 	}
 
- //   cout << "format inputs : " << args [0] << "\t" << args [1]<< endl;
-
     ofstream outStream;             // Input stream
     ifstream inStream;              // Output stream
 
@@ -94,32 +90,6 @@ int main(int argc ,char* argv[])
 
     inStream.close();
     outStream.close();
-
-//    cout << "Please enter the name of the input file : ";
-//    getline(cin,infile);        // Get the name of the input file
-
-    //while(file!=exit)
-/*    do{
-        cout <<"\n1 :-\tUTF-8\n2 :-\tUTF-32\n3 :-\tBaudot Code\n4 :-\tMorse Code\n\n";
-        cout << "Please enter the NUMBER of the input file inFormat : ";
-        //getline(cin,inFormat);
-        
-        cin >> inFormat;
-        cout << endl;
-
-        if (inFormat == 99)
-        {
-            cout << "CODE 99...EXITING\n";
-            return 0;
-        }
-
-        if (inFormat <= 0 || inFormat > 4)
-        {
-            cout<<"WRONG inFormat\nPlease try again\n";
-            //return 0;
-        }
-
-    }while (inFormat <= 0 || inFormat > 4);*/
 
     cout<< "input : " <<inFormat<<"\noutput : " <<outFormat<<endl;
 

@@ -31,7 +31,7 @@ int main(int argc ,char* argv[])
 
     */
 
-	int args[2] = {};
+	int args[2] = {}; //replace this later 
 	for(int ii = 0 ; ii < 2; ii++ )
     {
 		char *p;
@@ -72,17 +72,28 @@ int main(int argc ,char* argv[])
 
  //   cout << "format inputs : " << args [0] << "\t" << args [1]<< endl;
 
-    ofstream outStream;         //Input stream
-    ifstream inStream;          //Output stream
+    ofstream outStream;             // Input stream
+    ifstream inStream;              // Output stream
 
-    string infile;              // string variable to store the name of the input file
+    string infile;                  // string variable to store the name of the input file
 
-    int inFormat = args[0];     //int variable to get the input file format
-    int outFormat = args[1];    //int variable to get the output file format
+    int inFormat = args[0];         // int variable to get the input file format
+    int outFormat = args[1];        // int variable to get the output file format
     string exit = "exit";
 
     cout<<"input file name : ";
     cout<<argv[1]<<endl;
+
+    inStream.open(argv[1]);             // "connected" to input file
+
+    outStream.open("outputFile.txt");   // "connected" to output file
+
+    int f,s,t;
+    inStream >> f >> s >> t;
+    outStream << "sum : " << f + s + t << endl;
+
+    inStream.close();
+    outStream.close();
 
 //    cout << "Please enter the name of the input file : ";
 //    getline(cin,infile);        // Get the name of the input file

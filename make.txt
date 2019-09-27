@@ -4,7 +4,7 @@ TARGET= encode
 OBJS = encode.o
 
 # Add support for pthread and real-time clock here:
-CXXFLAGS  = -Wall -Werror -Wextra
+CXXFLAGS  = -Wall -Werror -Wextra -pedantic -ansi
 
 # You should not need to change any of this:
 CC = g++

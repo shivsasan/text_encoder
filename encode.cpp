@@ -11,6 +11,11 @@ using namespace std;
 #define INPUT_FORMAT 0
 #define OUTPUT_FORMAT 1
 
+    // Morse code Array
+    //A-Z 0-25
+    //26-35 digits
+string MORSE[] = {".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..", ".----", "..---", "...--", "....-", ".....", "-....", "--...", "---..", "----.", "-----", "--..--", ".-.-.-", "..--..", "-..-.", "-....-", "-.--.", "-.--.-"};
+
 int main(int argc ,char* argv[])
 {
     if(argc < 4){
@@ -23,12 +28,10 @@ int main(int argc ,char* argv[])
 	}
 
     /* Input and output format numbers
-
         1 :-    UTF-8
         2 :-    UTF-32
         3 :-    Baudot Code
         4 :-    Morse Code
-
     */
 
 	int args[2] = {}; //replace this later 
@@ -85,10 +88,16 @@ int main(int argc ,char* argv[])
     outStream.open("outputFile.txt");   // "connected" to output file
 
     char temp ;
-    while(!inStream.eof())
+    while(inStream.get(temp))
     {
-        inStream >> temp;
-        temp += temp;
+ //       inStream >> temp;
+        int ind = temp;
+   //     cout << temp <<endl;
+   //  cout << MORSE[ind-41];
+        outStream << MORSE[ind-41] << " ";
+ 
+        if (temp == ' ')
+            outStream << " ";
     }
 
     if(inStream.eof())
@@ -96,8 +105,8 @@ int main(int argc ,char* argv[])
         cout<<"EOF here\n";
     }
 
-    cout << temp << endl;
-    outStream<<"sum: "<<temp;
+   // cout << temp << endl;
+   // outStream<<"sum: "<<temp;
     //inStream >> f >> s >> t;
     //outStream << "sum : " << f + s + t << endl;
 
@@ -107,48 +116,4 @@ int main(int argc ,char* argv[])
     cout<< "input : " <<inFormat<<"\noutput : " <<outFormat<<endl;
 
     return 0;
-}
-
-string morse(int index)
-{
-    string temp[26];
-    temp[0] =".-";
-    temp[1] ="-...";
-    temp[2] ="-.-.";
-    temp[3] ="-..";
-    temp[4] =".";
-    temp[5] ="..-.";
-    temp[6] ="--.";
-    temp[7] ="....";
-    temp[8] ="..";
-    temp[9] =".---";
-    temp[10] ="-.-";
-    temp[11] =".-..";
-    temp[12] ="--";
-    temp[13] ="-.";
-    temp[14] ="---";
-    temp[15] =".--.";
-    temp[16] ="--.--";
-    temp[17] =".-.";
-    temp[18] ="...";
-    temp[19] ="-";
-    temp[20] ="..-";
-    temp[21] ="...-";
-    temp[22] =".--";
-    temp[23] ="-..-";
-    temp[24] ="-.--";
-    temp[25] ="--..";
-    temp[26] =".......";
-
-    temp[27] =".----" // 1
-    temp[28] ="..---" // 2
-    temp[29] ="...--" // 3
-    temp[30] ="....-" // 4
-    temp[31] ="....." // 5
-    temp[32] ="-...." // 6
-    temp[33] ="--..." // 7
-    temp[34] ="---.." // 8
-    temp[35] ="----." // 9
-    temp[36] ="-----" // 0
-    
 }

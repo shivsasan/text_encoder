@@ -8,6 +8,167 @@
 
 using namespace std;
 
+void toU8(string format, char* file)
+{
+    ofstream outStream;             // Input stream
+    ifstream inStream;              // Output stream
+
+    inStream.open(file);             // "connected" to input file
+    outStream.open("outFile.txt");   // "connected" to output file
+
+    char temp;          //Store the last char from file
+    int ind = 0;        //int val of temp
+    string morseTemp;   //store intermediate morse code
+    string bcTemp;      //store intermediate bc code
+
+    if (format == "mc")  //morse to utf8
+    {
+        char daAlphabet ;   //A
+        bool wasSpace = false;          //true if last character was a space
+
+        while(inStream.get(temp))  //get dots and dashes
+        {
+            if (temp != ' ')       //check space char
+            {
+                morseTemp = morseTemp + temp;  //make a string until a space arrives
+                wasSpace = false;
+            }
+
+            if (temp == ' ')       // when space
+            {
+                if(wasSpace)
+                {
+                    wasSpace = false;
+                    outStream << " ";
+                    morseTemp = "";
+                }
+                else 
+                {
+                    for (int i = 0; i <= 35 ; i++)  //morse to utf8
+                    {
+                        if(morseTemp == MORSE[i])
+                        {
+                            daAlphabet = 'A'+i;
+                            outStream << daAlphabet;
+                            i = 36;
+                        }
+                    }
+                }
+                wasSpace = true;
+                morseTemp = "";
+            }        
+        }
+    }
+
+    if (format = "bc")
+    {
+        bool wasSpace2 = true;
+        if(wasSpace2){}
+        char mode = 'L';           //mode bit defaults to letters
+        string lastString;
+
+        while(inStream.get(temp))  //get 0 and 1
+        {
+            if (temp != ' ')       //check space char
+            {
+                bcTemp = bcTemp + temp;  //make a string until a space arrives
+                std::cout<<bcTemp<<"!"<<endl;
+                wasSpace2 = false;
+            }
+
+            if (temp == ' ')       // when space
+            {
+                for(int i = 0; i <= 31 ; i++)     //get index form BC
+                {
+                    if(bcTemp == BC[i])           //
+                    {
+                        cout<< BC[i]<<endl;
+                        if(mode == 'L')
+                        {
+                            cout<< BC_LETTERS[i]<<endl;
+                            if(i==27)
+                            {
+                                mode = 'F';
+                            }
+                            if(i==31)
+                            {
+                                mode = 'L';
+                            }
+                            if(i!=27)
+                            {
+                                outStream << BC_LETTERS[i];
+                            }
+                        }
+
+                        if(mode == 'F')
+                        {
+                            cout<< BC_FIGURES[i]<<endl;
+                            if(i==31)
+                            {
+                                mode = 'L';
+                            }
+                            if(i==27)
+                            {
+                                mode = 'F';
+                            }
+                            if(i!= 31)
+                            {
+                                outStream<< BC_FIGURES[i];
+                            }
+                        }
+                        bcTemp = "";
+                        i=32;
+                    }
+                }/home/ssasan/Desktop/cmpt365/text_encoder/inFile.txt
+
+                wasSpace2 = true;
+            }
+            lastString = bcTemp;        
+        }
+
+        for(int j = 0; j <= 31 ; j++)     //get index form BC
+        {
+            if(lastString == BC[j])           //
+           {
+                cout<< BC[j]<<endl;
+                if(mode == 'L')
+                {
+                    cout<< BC_LETTERS[j]<<endl;
+                    if(j==27)
+                    {
+                        mode = 'F';
+                    }
+                    if(j==31)
+                    {
+                        mode = 'L';
+                    }
+                    if(j!=27)
+                    {
+                        outStream << BC_LETTERS[j];
+                    }
+                }
+                if(mode == 'F')
+                {
+                    cout<< BC_FIGURES[j]<<endl;
+                    if(j==31)
+                    {
+                        mode = 'L';
+                    }
+                    if(j==27)
+                    {
+                        mode = 'F';
+                    }
+                    if(j!= 31)
+                    {
+                        outStream<< BC_FIGURES[j];
+                    }
+                }
+            }
+        }
+    }
+    return;
+}
+
     /*
       utf8   ->    u8
       utf32  ->    u32
@@ -109,7 +270,7 @@ int main(int argc ,char* argv[])
     and then concat that to a word, seperate words when double spaces show up    
     */
 
-    if (inFormat == "mc")  //morse to utf8
+/*    if (inFormat == "mc")  //morse to utf8
     {
         char daAlphabet ;   //A
         bool wasSpace = false;          //true if last character was a space
@@ -146,14 +307,14 @@ int main(int argc ,char* argv[])
                 morseTemp = "";
             }        
         }
-    }
+    }*/
    
-    if(inFormat == "bc") //bc to utf8
+/*    if(inFormat == "bc") //bc to utf8
     {
         bool wasSpace2 = true;
         if(wasSpace2){}
         char mode = 'L';           //mode bit defaults to letters
-        int lastIndex;
+ //       int lastIndex;
         string lastString;
 
  //     char daAlphabet;
@@ -208,9 +369,9 @@ int main(int argc ,char* argv[])
                         }
                         bcTemp = "";
                         i=32;
-                        lastIndex = i;
+ //                       lastIndex = i;
                     }
-                }
+                }/home/ssasan/Desktop/cmpt365/text_encoder/inFile.txt
 
                 wasSpace2 = true;
  //               bcTemp = "";
@@ -259,7 +420,7 @@ int main(int argc ,char* argv[])
                     }
                 }
 
-        if (lastIndex != 0)
+/*        if (lastIndex != 0)
         {
             if(mode == 'L')
             {
@@ -272,8 +433,8 @@ int main(int argc ,char* argv[])
                 cout<<BC_FIGURES[lastIndex]<<endl;
                 outStream << BC_FIGURES[lastIndex];
             }
-        }
-    }
+        }*/
+    }*/
 
     //check end of file
     if(inStream.eof())

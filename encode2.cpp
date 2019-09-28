@@ -8,6 +8,8 @@
 
 using namespace std;
 
+void toU8();
+
     /*
       utf8   ->    u8
       utf32  ->    u32
@@ -259,7 +261,7 @@ int main(int argc ,char* argv[])
                     }
                 }
 
-        if (lastIndex != 0)
+       /* if (lastIndex != 0)
         {
             if(mode == 'L')
             {
@@ -272,7 +274,7 @@ int main(int argc ,char* argv[])
                 cout<<BC_FIGURES[lastIndex]<<endl;
                 outStream << BC_FIGURES[lastIndex];
             }
-        }
+        }*/
     }
 
     //check end of file

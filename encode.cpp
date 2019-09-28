@@ -27,93 +27,109 @@ int main(int argc ,char* argv[])
 		exit(EXIT_FAILURE);
 	}
 
-    /* Input and output format numbers
-        1 :-    UTF-8
-        2 :-    UTF-32
-        3 :-    Baudot Code
-        4 :-    Morse Code
-    */
-
-	int args[2] = {}; //replace this later 
-	for(int ii = 0 ; ii < 2; ii++ )
-    {
-		char *p;
-		errno = 0;
-		//convert argv to base 10 integer;
-		long conv = strtol(argv[ii + 2], &p, 10);
-
-		// Check for errors: e.g., the string does not represent an integer
-		// or the integer is larger than int
-		if (errno != 0 || *p != '\0') 
-        {
-		    // Put here the handling of the error, like exiting the program with
-		    // an error message
-		    fprintf( stderr, "Error: ERROR for casting number!\n" );
-		    exit(EXIT_FAILURE);
-		}
-
-        if (conv > 4)
-        {
-            fprintf(stderr, "Error: Argument numbers must be smaller than 4!\n");
-            exit(EXIT_FAILURE);
-        }
-        
-        else 
-        {
-		    // No error
-		    if(conv <= 0)
-            {
-		    	fprintf( stderr, "Error: All arguments must be positive.\n" );
-		    	exit(EXIT_FAILURE);
-		    }
-
-		    args[ii] = conv;
-		}
-	}
-
     ofstream outStream;             // Input stream
     ifstream inStream;              // Output stream
 
-    string infile;                  // string variable to store the name of the input file
+    string inFormat = argv[2];         // int variable to get the input file format
+    string outFormat = argv[3];        // int variable to get the output file format
 
-    int inFormat = args[0];         // int variable to get the input file format
-    int outFormat = args[1];        // int variable to get the output file format
-    string exit = "exit";
-
-    cout<<"input file name : ";
-    cout<<argv[1]<<endl;
+    std::cout<<"input file name : ";
+    std::cout<<argv[1]<<endl;
 
     inStream.open(argv[1]);             // "connected" to input file
 
-    outStream.open("outputFile.txt");   // "connected" to output file
+    outStream.open("outFile.txt");   // "connected" to output file
 
-    char temp ;
-    while(inStream.get(temp))
+    char temp;          //Store the last char from file
+    int ind = 0;        //int val of temp
+    string morseTemp;   //store intermediate morse code
+
+    /*UTF8 to Morse*/
+
+    if (outFormat == "m") //add smaller characters
     {
- //       inStream >> temp;
-        int ind = temp;
-   //     cout << temp <<endl;
-   //  cout << MORSE[ind-41];
-        outStream << MORSE[ind-41] << " ";
- 
-        if (temp == ' ')
-            outStream << " ";
+        while(inStream.get(temp))
+        {
+            if (temp != ' ')
+            {
+                ind = temp;
+                if (ind>=95 && ind <=122)
+                {
+                    outStream << MORSE[ind-97] << " ";
+                }
+                else
+                {
+                    std::cout<<ind<<endl;
+                    outStream << MORSE[ind-65] << " ";
+                }
+            }
+    
+            if (temp == ' ')
+                outStream << temp;
+        }
     }
 
+    /* 
+    
+    Morse to UTF8 
+    
+    make strings of morse alphabets and then at a space character 
+    convert them to utf8 by comparing with the global MORSE array 
+    and then concat that to a word, seperate words when double spaces show up
+    
+    */
+
+    char daAlphabet ;   //A
+    bool wasSpace = false;          //true if last character was a space
+    if (inFormat == "m") 
+    {
+        while(inStream.get(temp))  //get dots and dashes
+        {
+            if (temp != ' ')       //check space char
+            {
+                morseTemp = morseTemp + temp;  //make a string until a space arrives
+ //               std::cout<<morseTemp << endl;
+                wasSpace = false;
+            }
+
+            if (temp == ' ')       // when space
+            {
+                if(wasSpace)
+                {
+                    wasSpace = false;
+                    outStream << " ";
+                    morseTemp = "";
+                }
+                else 
+                {
+                    for (int i = 0; i <= 35 ; i++)  //morse to utf8
+                    {
+                        if(morseTemp == MORSE[i])
+                        {
+                            daAlphabet = 'A'+i;
+                            outStream << daAlphabet;
+                            i = 36;
+                        }
+                    }
+                }
+                wasSpace = true;
+                morseTemp = "";
+            }        
+        }
+    }
+
+//    std::cout << sizeof(string)<<endl;
+
+    //check end of file
     if(inStream.eof())
     {
-        cout<<"EOF here\n";
+        std::cout<<"EOF here\n";
     }
-
-   // cout << temp << endl;
-   // outStream<<"sum: "<<temp;
-    //inStream >> f >> s >> t;
-    //outStream << "sum : " << f + s + t << endl;
 
     inStream.close();
     outStream.close();
 
-    cout<< "input : " <<inFormat<<"\noutput : " <<outFormat<<endl;
+//    std::cout<< "input : " <<inFormat<<"\noutput : " <<outFormat<<endl;
 
     return 0;
 }

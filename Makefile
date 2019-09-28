@@ -20,4 +20,4 @@ $(TARGET): $(OBJS)
 clean:
 	rm -f $(TARGET)
 	rm -f $(OBJS)
-	rm -f outputFile.txt
+	rm -f outFile.txt
